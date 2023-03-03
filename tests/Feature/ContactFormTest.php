@@ -12,7 +12,25 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ContactFormTest extends TestCase
 {
-    
+    use RefreshDatabase;
+
+    private $createMsg;
+
+  
+
+    public function setUp() :void
+    {
+        parent::setUp();
+        $file = UploadedFile::fake()->create('audio.csv');
+        $this->createMsg = ContactForm::create([
+            'name' => 'Solomon Lar',
+            'email' => 'tester@yahoo.com',
+            'message' => 'Testing the API',
+            'attachment' => $file
+        ]);
+
+        
+    }
     public function test_get_all_contact_details()
     {
         $this->withoutMiddleware();
@@ -27,9 +45,9 @@ class ContactFormTest extends TestCase
         $response = $this->withHeaders([
             'X-Header' => 'Value',
         ])->json('POST', 'api/msg', [
-            'name' => 'Solomon Lar',
-            'email' => 'tester@yahoo.com',
-            'message' => 'Testing the API',
+            'name' => 'Moses Lar',
+            'email' => 'moses@yahoo.com',
+            'message' => 'Creating a Message',
             'attachment' => $file
         
         ]);
